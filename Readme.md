@@ -57,7 +57,11 @@ Run the following command:
 ```sh
 uvicorn api:app --host 0.0.0.0 --port 8000
 ```
-
+### Go to the API 
+In the brower copy and past this url
+```sh
+http://127.0.0.1:8000/docs
+```
 ### Endpoint: `/generate/`
 #### **Request Format**
 ```json
