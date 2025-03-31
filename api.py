@@ -5,19 +5,19 @@ from transformers import GPT2LMHeadModel, GPT2Tokenizer
 import re
 
 # Load the trained model and tokenizer
-model_path = "./gpt2_reddit_model"  # Update with your saved model path
+model_path = "./gpt2_reddit_model" 
 tokenizer = GPT2Tokenizer.from_pretrained(model_path)
 model = GPT2LMHeadModel.from_pretrained(model_path)
 
 app = FastAPI()
 
 class InputText(BaseModel):
-    prompt: str  # Input prompt from user
+    prompt: str  
 
 # Function to preprocess input (clean spaces, remove unwanted characters)
 def preprocess_text(text: str) -> str:
-    text = text.strip()  # Remove leading/trailing spaces
-    text = re.sub(r"\s+", " ", text)  # Normalize multiple spaces
+    text = text.strip() 
+    text = re.sub(r"\s+", " ", text)  
     return text
 
 # Function to clean model output (remove special tokens and unwanted spaces)
@@ -36,10 +36,10 @@ def generate_text(input_text: InputText):
         input_ids,
         max_length=10,  
         num_return_sequences=1,
-        no_repeat_ngram_size=2,  # 🔹 Prevents repetition
-        top_k=40,  # 🔹 Lower k for more focused responses
-        top_p=0.85,  # 🔹 Reduce randomness slightly
-        temperature=0.6,  # 🔹 Lower temp for more predictable responses
+        no_repeat_ngram_size=2,  
+        top_k=40,  
+        top_p=0.85,  
+        temperature=0.6,
         do_sample=True
     )
 
@@ -50,44 +50,5 @@ def generate_text(input_text: InputText):
     completion = clean_output(generated_text[len(processed_prompt):])
 
     return {"completion": completion}
-
-
-
-# from fastapi import FastAPI
-# from pydantic import BaseModel
-# import torch
-# from transformers import GPT2LMHeadModel, GPT2Tokenizer
-
-# # Load the trained model and tokenizer
-# model_path = "./gpt2_reddit_model"  # Update with your saved model path
-# tokenizer = GPT2Tokenizer.from_pretrained(model_path)
-# model = GPT2LMHeadModel.from_pretrained(model_path)
-
-# app = FastAPI()
-
-# class InputText(BaseModel):
-#     prompt: str  # Input prompt from user
-
-# @app.post("/generate/")
-# def generate_text(input_text: InputText):
-#     input_ids = tokenizer.encode(input_text.prompt, return_tensors="pt")
-
-#     output = model.generate(
-#     input_ids,
-#     max_length=10,  
-#     num_return_sequences=1,
-#     no_repeat_ngram_size=2,  # 🔹 Prevents repetition
-#     top_k=40,  # 🔹 Lower k for more focused responses
-#     top_p=0.85,  # 🔹 Reduce randomness slightly
-#     temperature=0.6,  # 🔹 Lower temp for more predictable responses
-#     do_sample=True
-# )
-
-
-#     # Decode the output and REMOVE the input text
-#     generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
-#     completion = generated_text[len(input_text.prompt):].strip()  # Remove input from output
-
-#     return {"completion": completion}
 
 # Run the API using: uvicorn filename:app --reload
