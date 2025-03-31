@@ -1,0 +1,6 @@
+gpt2_model
+gpt2_reddit_model
+logs
+results
+cleaned_reddit_comments.csv
+reddit_comments.csv
