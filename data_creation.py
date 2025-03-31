@@ -6,7 +6,7 @@ import re
 conn = sqlite3.connect('reddit.db')
 cursor = conn.cursor()
 
-# Query the comments table (replace 'comment' with actual table name)
+# Query the comments table
 cursor.execute("SELECT body FROM comment")  
 rows = cursor.fetchall()
 
